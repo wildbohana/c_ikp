@@ -3,6 +3,8 @@
 #include "Windows.h"
 
 // Element u hash tabeli (tj. u bucket-u)
+// Kljuc - pokazivac na memorijski blok
+// Vrednost - broj Heap-a u kom se nalazi alocirani blok
 typedef struct hash_node {
 	void* key;				// Kljuc prema kojem se vrsi pretraga u tabeli
 	void* value;			// Vrednost koja se smesta u tabelu
@@ -11,6 +13,7 @@ typedef struct hash_node {
 
 // Hash tabela
 // U bucket idu svi elementi ciji kljuc vraca isti hash (kolizija)
+// HashTable nije thread-safe (zbog toga se koristi recnik)
 typedef struct hash_table {
 	HashNode** _table;								// Bucket-i (niz pokazivaca na elemente)
 	int size;										// Trenutna velicina tabele
