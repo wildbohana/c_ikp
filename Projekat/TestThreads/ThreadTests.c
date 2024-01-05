@@ -10,6 +10,7 @@ void ThreadTests_custom_malloc_initialize(int number_of_threads) {
 	// Dijagnostika
 	clock_t start_time, end_time;
 	double cpu_time_used;
+	// Ako zelimo 4gb, samo stavimo 400000, ali moram ovako jer nemam dovoljno RAM-a
 	int number_of_bytes = 200000 / number_of_threads;
 
 	printf("\n\tAHM malloc i free funkcije\n");
@@ -40,6 +41,7 @@ void ThreadTests_custom_malloc_initialize(int number_of_threads) {
 	}
 	free(threads);
 
+	// Nije NULL treba da bude 200000 (2gb)
 	printf("NIJE NULL: %d elemenata!", counter);
 	counter = 0;
 	DeleteCriticalSection(&cs);
@@ -51,6 +53,7 @@ void ThreadTests_malloc_initialize(int number_of_threads) {
 	// Dijagnostika
 	clock_t start_time, end_time;
 	double cpu_time_used;
+	// Ako zelimo 4gb, stavimo 400000
 	int number_of_bytes = 200000 / number_of_threads;
 
 	HANDLE* threads;
@@ -84,22 +87,20 @@ DWORD WINAPI ThreadTests_custom_malloc_and_custom_free(LPVOID lpParam) {
 	void* items[10000];
 	int number_of_bytes = (int)lpParam;
 
-	// malloc
+	// malloc (10000 puta po 200mb = 2gb)
 	for (int i = 0; i < 10000; i++) {
 		items[i] = advanced_malloc(number_of_bytes);
 	}
 
 	// free
 	for (int i = 0; i < 10000; i++) {
+		
 		if (items[i] != NULL)
 		{
-			if (items[i] != NULL) {
-				advanced_free(items[i]);
-				EnterCriticalSection(&cs);
-					counter++;
-				LeaveCriticalSection(&cs);
-			}
-
+			advanced_free(items[i]);
+			EnterCriticalSection(&cs);
+				counter++;
+			LeaveCriticalSection(&cs);
 		}
 	}
 

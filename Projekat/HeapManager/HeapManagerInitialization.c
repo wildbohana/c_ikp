@@ -7,6 +7,7 @@ HeapManager* HeapManagerInitialization_initialize_heap_manager(int heap_size, in
 	if (manager != NULL) {
 		// Provera da li je max_heap_count veci od 0
 		if (maximal_heap_count > 0) {
+			// Lista Heap-ova
 			manager->heap_array = (Heap*)malloc(maximal_heap_count * sizeof(Heap));
 			if (manager->heap_array != NULL) {
 				// Ako je uspesna alokacija memorije, inicijalizuju se sva mesta za Heap-ove na NULL
@@ -16,6 +17,19 @@ HeapManager* HeapManagerInitialization_initialize_heap_manager(int heap_size, in
 			else {
 				// Oslobadja se vec zauzeta memorija i inicijalizacija se proglasava neuspesnom
 				free(manager); 
+				return NULL;
+			}
+
+			// Lista zauzete memorije
+			manager->heap_allocated_bytes = (int*)malloc(maximal_heap_count * sizeof(int));
+			if (manager->heap_allocated_bytes != NULL) {
+				// Ako je uspesna alokacija memorije, inicijalizuju se sva mesta za Heap-ove na NULL
+				for (int i = 0; i < maximal_heap_count; i++)
+					manager->heap_allocated_bytes[i] = -1;
+			}
+			else {
+				// Oslobadja se vec zauzeta memorija i inicijalizacija se proglasava neuspesnom
+				free(manager);
 				return NULL;
 			}
 		}
@@ -34,6 +48,7 @@ HeapManager* HeapManagerInitialization_initialize_heap_manager(int heap_size, in
 
 		manager->max_heaps = maximal_heap_count;
 		manager->heap_count = 0;
+		manager->current_heap = 0;
 		InitializeCriticalSection(&manager->manager_mutex);
 	}
 	return manager;
@@ -47,6 +62,9 @@ void HeapManagerInitialization_destroy_manager(HeapManager** manager) {
 		if (temp != NULL) {
 			if (temp->heap_array != NULL) 
 				free(temp->heap_array);						// Dealokacija niza Heap-ova
+			if (temp->heap_allocated_bytes != NULL)	
+				free(temp->heap_allocated_bytes);
+			
 			DeleteCriticalSection(&temp->manager_mutex);	// Brisanje kriticne sekcije
 			free(temp);										// Dealokacija samog Manager-a
 			manager = NULL;									// Pokazivac na NULL
@@ -68,6 +86,11 @@ void HeapManagerInitialization_destroy_manager_with_heaps(HeapManager** manager)
 				}
 				free(temp->heap_array);
 			}
+
+			if (temp->heap_allocated_bytes != NULL) 
+				free(temp->heap_allocated_bytes);
+			
+
 			DeleteCriticalSection(&temp->manager_mutex);
 			free(temp);
 			manager = NULL;

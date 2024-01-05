@@ -14,7 +14,7 @@
 *
 * Vraca: BOOL vrednost koja indicira na uspesnost izvrsene operacije
 */
-BOOL HeapManipulationOperations_get_heap(HeapManager* manager, Heap* out_heap);
+BOOL HeapManipulationOperations_get_heap(HeapManager* manager, int* out_heap_idx);
 
 /**
 * Dobavlja memoriju iz trenutnog Heap-a

@@ -22,7 +22,7 @@ BOOL ManagerInitialization_initialize_manager(unsigned heap_count) {
 			break;
 		}
 	}
-
+	
 	// Ako su svi Heap-ovi uspesno dodati nastavlja dalje (stvara recnik)
 	// U suprotnom brise sve, i Manager-a i Heap-ove
 	if (ret == FALSE)
