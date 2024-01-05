@@ -1,0 +1,81 @@
+--- HeapManager ---
+
+HeapManager:
+ - u sebi ima niz Heap-ova (fiksan broj)
+ - takođe sadrži info koliko bajta je alocirano u kom Heap-u
+ - heap_size, heap_count, max_heaps, current_heap
+ - ima i kritičnu sekciju (mutex, da bude thread-safe)
+
+HeapCreation:
+ - podešava optimizaciju za Heap-ove
+ - inicijalizacija Heap-ova: 
+   + default (1/4 maksimalne veličine Heap-a)
+   + infinite (puna veličina heap-a)
+   + infinite_unlocker (puna veličina heap-a, nije thread-safe)
+HeapDestruction:
+ - uništava Heap (sistemski poziv HeapDestroy)
+
+HeapManipulation:
+ - alociranje memorije
+ - alociranje memorije koje nije thread-safe
+ - oslobađanje memorije
+ - oslobađanje memorije koje nije thread-safe
+ ~ thread safe je za HeapManager, unlocked je za bucket-e iz HashMap
+
+HeapAddingOperations:
+ - dodavanje Heap-ova u HeapManager
+ - za default i infinite heap (samo thread-safe)
+
+HeapManipulationOperations:
+ - get memory
+ - free memory
+ - get heap (ovde se traži Heap sa najmanje alociranih bajta)
+
+HeapManagerInitialization:
+ - kreiranje menadžera
+ - brisanje menadžera
+
+--- AHM ---
+
+HashNode:
+ - struktura
+ - ključ (pokazivač na memorijsku adresu)
+ - vrednost (handler za heap u kom je ta memorija smeštena)
+ - pokazivač na sledeći HashNode
+
+HashTable:
+ - struktura
+ - bucket-i (svi ključevi koji se heširaju na istu vrednost)
+ - veličina, najmanja veličina, broj elemenata u tabeli, pokazivači na funkcije
+
+Dictionary:
+ - struktura koja sadrži HashTable
+ - ima Handle za svoj privani Heap u kom smešta HashTable
+ - kritična sekcija (thread-safe)
+ - on je "omotač" za HashTable i čini je thread-safe
+
+Manager Initialization:
+ - inicijalizacija HeapManager (prvo HeapManager, pa HashTable od 1000 elemenata)
+ - uništavanje HeapManager
+
+ManagerOperations:
+ - advanced malloc (samo se prosledi broj bajta, vraća pokazivač na memoriju)
+ - advanced free (samo se prosledi pokazivač na memoriju)
+
+Dictionary:
+ - node_free, node_allocate, bucket_list_allocate, bucket_list_free
+   + pozivaju funkcije iz HeapManipulation (unlocked)
+ - stvaranje rečnika (kreira beskonačan unlocked heap i HashTable)
+ - ubaci u rečnik (dodaje novi element u heš tabelu)
+ - izbaci iz rečnika (izbacuje element iz tabele)
+ - uništi rečnik (deinicijalizuje heš tabelu i privatni Heap rečnika)
+
+HashTable:
+ - modulo, mulmod, miller rabin
+ - inicijalizacija heš tabele (bucket-i, alokacija tabele, init sa NULL)
+ - dobavi vrednost (prima ključ, iterira kroz bucket, vraća vrednost)
+ - rebuild table (menja veličinu tabeli kada dođe vreme za to)
+ - dodaj u tabelu (hešira ključ, ubacuje ga u bucket)
+ - obrisi iz tabele (prima ključ, nalazi element, preveže ga)
+ - deinicijalizacije heš tabele (sve na NULL)
+

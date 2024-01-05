@@ -9,16 +9,15 @@ BOOL HeapManipulationOperations_get_heap(HeapManager* manager, int* out_heap_idx
 	if (manager != NULL && manager->heap_count > 0) {
 		
 		EnterCriticalSection(&manager->manager_mutex);
-
-			// Prolaz kroz sve Heap-ove
+			// Prolaz kroz sve Heap-ove, traži se onaj sa najmanje alociranih bajta
 			for (int i = 0; i < manager->heap_count; i++) {
 				if (manager->heap_allocated_bytes[i] != -1 && manager->heap_allocated_bytes[i] <= minAllocSize) {
 					minAllocIndex = i;
 					minAllocSize = manager->heap_allocated_bytes[i];
 				}
 			}
-
 		LeaveCriticalSection(&manager->manager_mutex);
+		
 		if (minAllocIndex != -1) {
 			*out_heap_idx = minAllocIndex;
 			manager->current_heap = minAllocIndex;

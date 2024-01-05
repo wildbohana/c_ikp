@@ -54,26 +54,8 @@ HeapManager* HeapManagerInitialization_initialize_heap_manager(int heap_size, in
 	return manager;
 }
 
-// Brisanje Manager-a
-// Heap-ovi ce ostati (nece biti unisteni)
-void HeapManagerInitialization_destroy_manager(HeapManager** manager) {
-	if (manager != NULL) {
-		HeapManager* temp = *manager;
-		if (temp != NULL) {
-			if (temp->heap_array != NULL) 
-				free(temp->heap_array);						// Dealokacija niza Heap-ova
-			if (temp->heap_allocated_bytes != NULL)	
-				free(temp->heap_allocated_bytes);
-			
-			DeleteCriticalSection(&temp->manager_mutex);	// Brisanje kriticne sekcije
-			free(temp);										// Dealokacija samog Manager-a
-			manager = NULL;									// Pokazivac na NULL
-		}
-	}
-}
-
 // Brisanje i Manager-a i Heap-ova
-void HeapManagerInitialization_destroy_manager_with_heaps(HeapManager** manager) {
+void HeapManagerInitialization_destroy_manager(HeapManager** manager) {
 	if (manager != NULL) {
 		HeapManager* temp = *manager;
 		if (temp != NULL) {

@@ -1,0 +1,8 @@
+Oba testa se pokreću iz cmd
+
+Broj niti je hard-coded (u testu su odkomentarisani samo testovi od 20 niti)
+Niti dodatno primaju argument koji predstavlja broj Heap-ova
+ cmd: TestThreads.exe 10
+
+Kod klijent-server, prvo se pokreće server, pa onda klijent
+Oni nemaju dodatne argumente

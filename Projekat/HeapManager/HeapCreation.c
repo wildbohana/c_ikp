@@ -32,24 +32,6 @@ Heap HeapCreation_create_default_heap(int heap_size) {
 	}
 }
 
-// Stvara "veliki" Heap
-// Inicijalna velicina i maksimalna velicina Heap-a su jednake prosledjenoj vrednosti
-Heap HeapCreation_create_big_heap(int heap_size) {
-	if (heap_size > 0) {
-		Heap heap = HeapCreate(0, heap_size, heap_size);
-		if (heap != NULL) {
-			HeapCreation_set_options(heap);
-			return heap;
-		}
-		else {
-			return NULL;
-		}
-	}
-	else {
-		return NULL;
-	}
-}
-
 // Stvara "beskonacan" Heap
 // Inicijalna velicina je jednaka prosledjenoj vrednosti
 // Maksimalna velicina Heap-a je 0, odnosno Heap moze da raste po potrebi

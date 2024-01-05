@@ -19,18 +19,9 @@ HeapManager* HeapManagerInitialization_initialize_heap_manager(int heap_size, in
 
 /**
 * Funkcija unistava Heap Manager i postavlja prosledjeni pokazivac na Manager na NULL
-* Funkcija nece unistiti Heap-ove
-* Funkcija ce osloboditi memoriju Manager objekta
-*
-* manager: pokazivac na pokazivac na objekat Heap Managera kojeg je potrebno unistiti
-*/
-void HeapManagerInitialization_destroy_manager(HeapManager** manager);
-
-/**
-* Funkcija unistava Heap Manager i postavlja prosledjeni pokazivac na Manager na NULL
 * Funkcija ce unistiti i Heap-ove i invalidirati njihove Handle-ove
 * Funkcija ce osloboditi memoriju Manager objekta
 *
 * manager: pokazivac na pokazivac na objekat Heap Managera kojeg je potrebno unistiti
 */
-void HeapManagerInitialization_destroy_manager_with_heaps(HeapManager** manager);
+void HeapManagerInitialization_destroy_manager(HeapManager** manager);

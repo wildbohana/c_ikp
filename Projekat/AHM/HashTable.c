@@ -1,6 +1,6 @@
 #include "HashTable.h"
 
-// Funkcija racuna (a^b)%c
+// Pomocna funkcija, racuna (a^b)%c
 int _HashTable_modulo(int a, int b, int c) {
 	long long x = 1, y = a;	// long long jer moze doci do overflow-a int-a
 	while (b > 0) {
@@ -13,7 +13,7 @@ int _HashTable_modulo(int a, int b, int c) {
 	return x % c;
 }
 
-// Funkcija racuna (a^b)%c i uzima u obzir da a^b moze da overflow-uje 
+// Pomocna funkcija, racuna (a^b)%c i uzima u obzir da a^b moze da overflow-uje 
 long long _HashTable_mulmod(long long a, long long b, long long c) {
 	long long x = 0, y = a % c;
 	while (b > 0) {
@@ -26,7 +26,7 @@ long long _HashTable_mulmod(long long a, long long b, long long c) {
 	return x % c;
 }
 
-// Funkcija koja koristi miller-rabin-ovu metodu za racunanje sledeceg prostog broja
+// Pomocna funkcija koja koristi miller-rabin-ovu metodu za racunanje sledeceg prostog broja
 BOOL _HashTable_miller_rabin(long long p, int iteration) {
 	if (p < 2) {
 		return FALSE;

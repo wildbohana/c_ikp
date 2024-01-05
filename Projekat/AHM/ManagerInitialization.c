@@ -26,7 +26,7 @@ BOOL ManagerInitialization_initialize_manager(unsigned heap_count) {
 	// Ako su svi Heap-ovi uspesno dodati nastavlja dalje (stvara recnik)
 	// U suprotnom brise sve, i Manager-a i Heap-ove
 	if (ret == FALSE)
-		HeapManagerInitialization_destroy_manager_with_heaps(&_manager);
+		HeapManagerInitialization_destroy_manager(&_manager);
 	else {
 		ret = _Dictionary_create(1000);
 	}
@@ -40,7 +40,7 @@ BOOL ManagerInitialization_destroy_manager() {
 	BOOL ret = FALSE;
 
 	if (_manager != NULL) {
-		HeapManagerInitialization_destroy_manager_with_heaps(&_manager);
+		HeapManagerInitialization_destroy_manager(&_manager);
 		ret = TRUE;
 	}
 
