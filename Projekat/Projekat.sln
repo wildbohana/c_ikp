@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AHM", "AHM\AHM.vcxproj", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HeapManager", "HeapManager\HeapManager.vcxproj", "{7851DEEE-0DD7-4E77-B090-A5B04A0E0F05}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestThreads", "TestThreads\TestThreads.vcxproj", "{61FF05AD-ACAA-4607-A87E-3B2CA7D94625}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{7851DEEE-0DD7-4E77-B090-A5B04A0E0F05}.Release|x64.Build.0 = Release|x64
 		{7851DEEE-0DD7-4E77-B090-A5B04A0E0F05}.Release|x86.ActiveCfg = Release|Win32
 		{7851DEEE-0DD7-4E77-B090-A5B04A0E0F05}.Release|x86.Build.0 = Release|Win32
+		{61FF05AD-ACAA-4607-A87E-3B2CA7D94625}.Debug|x64.ActiveCfg = Debug|x64
+		{61FF05AD-ACAA-4607-A87E-3B2CA7D94625}.Debug|x64.Build.0 = Debug|x64
+		{61FF05AD-ACAA-4607-A87E-3B2CA7D94625}.Debug|x86.ActiveCfg = Debug|Win32
+		{61FF05AD-ACAA-4607-A87E-3B2CA7D94625}.Debug|x86.Build.0 = Debug|Win32
+		{61FF05AD-ACAA-4607-A87E-3B2CA7D94625}.Release|x64.ActiveCfg = Release|x64
+		{61FF05AD-ACAA-4607-A87E-3B2CA7D94625}.Release|x64.Build.0 = Release|x64
+		{61FF05AD-ACAA-4607-A87E-3B2CA7D94625}.Release|x86.ActiveCfg = Release|Win32
+		{61FF05AD-ACAA-4607-A87E-3B2CA7D94625}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
