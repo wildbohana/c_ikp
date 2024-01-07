@@ -9,8 +9,8 @@
 #include <time.h>
 #include "conio.h"
 
-#include "../TestCommon/BaseNetworkOperations.h"
-#include "../TestCommon/Message.h"
+#include "../TestCommon/Mreza.h"
+#include "../TestCommon/Poruka.h"
 
 #pragma comment (lib, "Ws2_32.lib")
 #pragma comment (lib, "Mswsock.lib")
@@ -20,131 +20,126 @@
 #define SERVER_PORT 27016
 #define CLIENTS_NO 100
 
-DWORD WINAPI client_thread(LPVOID lpParam);
+DWORD WINAPI klijentska_nit(LPVOID lpParam);
 CRITICAL_SECTION cs;
 
-int lengths[CLIENTS_NO];	//random duzine poruka
+// Duzine poruka - za svakog klijenta
+int duzine_poruka[CLIENTS_NO];
 
 int main() {
-	if (Base_initialize_windows_sockets() == FALSE)
-	{
+	// Inicijalizacija Windows soketa
+	if (Inicijalizuj_Socket() == FALSE)	{
 		return 1;
 	}
 
 	InitializeCriticalSection(&cs);
+
 	DWORD ids[CLIENTS_NO];
-	HANDLE threads[CLIENTS_NO];
+	HANDLE niti[CLIENTS_NO];
 
 	unsigned seed = time(0);
-
 	srand(seed);
-	int random_integer;
-	for (int index = 0; index < CLIENTS_NO; index++)
-	{
-		lengths[index] = (rand() % 400) + 100;
+
+	// Duzine od 100-500
+	for (int index = 0; index < CLIENTS_NO; index++) {
+		duzine_poruka[index] = (rand() % 400) + 100;
 	}
 
-	for (int i = 0; i < CLIENTS_NO; i++)
-	{
-		threads[i] = CreateThread(NULL, 0, &client_thread, (LPVOID)i, 0, &ids[i]);
+	// Stvaranje 100 klijentskih niti
+	for (int i = 0; i < CLIENTS_NO; i++) {
+		niti[i] = CreateThread(NULL, 0, &klijentska_nit, (LPVOID)i, 0, &ids[i]);
 	}
 
 	getchar();
 
-	for (int i = 0; i < CLIENTS_NO; i++)
-	{
-		CloseHandle(threads[i]);
+	// Gasenje 100 niti
+	for (int i = 0; i < CLIENTS_NO; i++) {
+		CloseHandle(niti[i]);
 	}
+
 	DeleteCriticalSection(&cs);
 
 	WSACleanup();
-
 	return 0;
-
 }
 
-DWORD WINAPI client_thread(LPVOID param)
-{
+// Zadatak za klijentsku nit
+DWORD WINAPI klijentska_nit(LPVOID param) {
+	// Kriticna sekcija
 	EnterCriticalSection(&cs);
 
-	int n = (int)param;
-	if (Base_initialize_windows_sockets() == FALSE)
-	{
+	int broj_klijenta = (int)param;
+	if (Inicijalizuj_Socket() == FALSE) {
 		return 1;
 	}
+	
+	printf("\nKlijent broj: %d\n", broj_klijenta);
 
-	printf("\nClient NO: %d\n", n);
+	int rezultat;
+	char* poruka;
+	int duzina_poruke = 0;	
 
 	SOCKET connect_socket = INVALID_SOCKET;
-	int result;
-	char* message;
-	int length = 0;
-
 	connect_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-	if (connect_socket == INVALID_SOCKET)
-	{
-		printf("socket failed with error: %ld\n", WSAGetLastError());
+	if (connect_socket == INVALID_SOCKET) {
+		printf("socket nesupesan, greska: %ld\n", WSAGetLastError());
 		WSACleanup();
 		return 1;
 	}
-	struct sockaddr_in server_address;
 
+	struct sockaddr_in serverska_adresa;
+	serverska_adresa.sin_family = AF_INET;
+	serverska_adresa.sin_addr.s_addr = inet_addr(SERVER_IP_ADDRESS);	// IP adresa servera
+	serverska_adresa.sin_port = htons(SERVER_PORT);
 
-	server_address.sin_family = AF_INET;							// IPv4 protocol
-	server_address.sin_addr.s_addr = inet_addr(SERVER_IP_ADDRESS);	// ip address of server
-	server_address.sin_port = htons(SERVER_PORT);
-
-	if (connect(connect_socket, (SOCKADDR*)&server_address, sizeof(server_address)) == SOCKET_ERROR)
-	{
-		printf("Unable to connect to server.\n");
+	if (connect(connect_socket, (SOCKADDR*)&serverska_adresa, sizeof(serverska_adresa)) == SOCKET_ERROR) {
+		printf("Spajanje sa serverom neuspesno.\n");
 		closesocket(connect_socket);
 		WSACleanup();
 	}
 
 	unsigned long int non_blocking_mode = 1;
-	result = ioctlsocket(connect_socket, FIONBIO, &non_blocking_mode);
+	rezultat = ioctlsocket(connect_socket, FIONBIO, &non_blocking_mode);
 
-	length = Data_generate_message(&message, lengths[n]);
-	Base_custom_select(connect_socket, 'w');
-	Base_custom_send(connect_socket, message, length);
-	//printf("Saljem na server: %s\n", message);
+	// Slanje poruke na server
+	duzina_poruke = Generisi_Poruku(&poruka, duzine_poruka[broj_klijenta]);
+	Selektuj_Operaciju(connect_socket, 'w');
+	Posalji_Poruku(connect_socket, poruka, duzina_poruke);
+	//printf("Saljem na server: %s\n", poruka);
 
-
+	// Pocetak merenja vremena
 	clock_t start_time, end_time;
 	double cpu_time_used;
 	start_time = clock();
 
-	char* message_for_classic_malloc = malloc(length);
-	free(message_for_classic_malloc);
+	// Redovan malloc i free
+	char* poruka_za_malloc = malloc(duzina_poruke);
+	free(poruka_za_malloc);
 
-
+	// Racunanje delte
 	end_time = clock();
 	cpu_time_used = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
-	printf("Vreme potrebno za zauzimanje %d bajtova standardnim malloc i free je : %f\n", length, cpu_time_used);
+	printf("Vreme potrebno za zauzimanje %d bajtova standardnim malloc i free je: %f\n", duzina_poruke, cpu_time_used);
 
-	free(message);
+	free(poruka);
 
-	Base_custom_select(connect_socket, 'r');
-	length = Base_custom_recieve(connect_socket, &message);
-
+	// Primanje poruke sa servera
+	Selektuj_Operaciju(connect_socket, 'r');
+	duzina_poruke = Primi_Poruku(connect_socket, &poruka);
 	//printf("Primio od servera: %s\n", message);
 
-	free(message);
-	//LeaveCriticalSection(&cs);
-	result = shutdown(connect_socket, SD_BOTH);
+	free(poruka);
 
-	// Check if connection is succesfully shut down.
-	if (result == SOCKET_ERROR)
-	{
-		printf("Shutdown failed with error: %d\n", WSAGetLastError());
+	rezultat = shutdown(connect_socket, SD_BOTH);
+	if (rezultat == SOCKET_ERROR) {
+		printf("Shutdown neuspesan, greska: %d\n", WSAGetLastError());
 		closesocket(connect_socket);
 		WSACleanup();
 		return 1;
 	}
 
+	// Zatvaranje soketa
 	closesocket(connect_socket);
 	LeaveCriticalSection(&cs);
-	//ReleaseSemaphore(hSemaphores[(n + 1) % CLIENTS_NO-1], 1, NULL);
 	return 0;
 }
