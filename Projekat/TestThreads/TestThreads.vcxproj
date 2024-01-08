@@ -142,11 +142,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="ThreadTests.h" />
+    <ClInclude Include="TestNiti.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StartTest.c" />
-    <ClCompile Include="ThreadTests.c" />
+    <ClCompile Include="TestNiti.c" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AHM\AHM.vcxproj">

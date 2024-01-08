@@ -2,45 +2,50 @@
 #include "Dictionary.h"
 
 // Zauzima trazenu memoriju (tako sto od HeapManager-a trazi memoriju)
-// Ako se memorija uspesno alocira, ubacuje se u recnik pointer->heap, sto omogucuje dealokaciju memorije
-void* advanced_malloc(int bytes) {
+// Ako se memorija uspesno alocira, ubacuje se u recnik pokazivac->heap, sto omogucuje dealokaciju memorije
+void* ahm_malloc(int broj_bajta) {
 	// Ako ne postoji Manager ili recnik, izadji iz aplikacije
-	if (_manager == NULL && _dictionary == NULL)
+	if (menadzer == NULL && recnik == NULL) {
 		exit(MANAGER_UNINITIALIZED_ERROR);
+	}
 
 	// Handler za Heap
 	Heap heap;
 
-	void* pointer = NULL;
-	if (bytes > 0) {
-		pointer = HeapManipulationOperations_get_memory(_manager, bytes, &heap);
-		BOOL is_inserted = FALSE;
-		if (pointer != NULL) {
-			is_inserted = _Dictionary_insert(pointer, heap);
+	void* pokazivac = NULL;
+	if (broj_bajta > 0) {
+		pokazivac = HeapOperacije_dobavi_memoriju(menadzer, broj_bajta, &heap);
+		BOOL ubacen = FALSE;
+
+		if (pokazivac != NULL) {
+			ubacen = UbaciURecnik(pokazivac, heap);
 		}
 
-		if (is_inserted == FALSE && pointer != NULL) {
-			HeapManipulation_free_memory(pointer, heap);
-			pointer = NULL;
+		if (ubacen == FALSE && pokazivac != NULL) {
+			HeapFunkcije_dealociraj(pokazivac, heap);
+			pokazivac = NULL;
 		}
 	}
 
-	return pointer;
+	return pokazivac;
 }
 
 // Oslobadja memorijski blok na koji pokazuje pokazivac
 // Trazi u recniku pokazivac, kako bi dobio Heap na koji je alocirana memorija, a potom radi i oslobadjanje memorije iz tog Heap-a
-void advanced_free(void* pointer) {
-	if (pointer == NULL)
+void ahm_free(void* pokazivac) {
+	if (pokazivac == NULL) {
 		exit(NULL_SENT_ERROR);
+	}
 
-	if (_dictionary == NULL && _manager == NULL)
+	if (recnik == NULL && menadzer == NULL) {
 		exit(MANAGER_UNINITIALIZED_ERROR);
+	}
 
 	// Handler za Heap
 	Heap heap = NULL;
 
-	BOOL is_removed = _Dictionary_remove(pointer, &heap);
-	if (is_removed)
-		HeapManipulationOperations_free_memory(_manager, pointer, heap);
+	BOOL izbacen = IzbaciIzRecnika(pokazivac, &heap);
+	if (izbacen) {
+		HeapManipulationOperations_free_memory(menadzer, pokazivac, heap);
+	}
 }

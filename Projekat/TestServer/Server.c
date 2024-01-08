@@ -23,7 +23,7 @@ CRITICAL_SECTION cs;
 
 int main(void) {
 	// Inicijalizacija Managera sa 5 Heap-ova
-	ManagerInitialization_initialize_manager(5);
+	ManagerInitialization_inicijalizuj_manager(5);
 
 	InitializeCriticalSection(&cs);
 	SOCKET listen_socket = INVALID_SOCKET;
@@ -131,7 +131,7 @@ int main(void) {
 			}
 
 			// Prihvati zahtev, generisi worker thread
-			printf("Novi klijentski zahtev prihvacen (%d). Adresa klijenta: %s : %d\n", brojac, inet_ntoa(klijentska_adresa.sin_addr), ntohs(klijentska_adresa.sin_port));
+			printf("\nNovi klijentski zahtev prihvacen (%d). Adresa klijenta: %s : %d\n", brojac, inet_ntoa(klijentska_adresa.sin_addr), ntohs(klijentska_adresa.sin_port));
 			prihvacen_thread[brojac] = CreateThread(NULL, 0, &worker_thread_funkcija, accepted_socket, 0, &ids[brojac]);
 			brojac++;
 		}
@@ -158,7 +158,7 @@ int main(void) {
 	DeleteCriticalSection(&cs);
 
 	// Brisanje Manager-a, zatvaranje soketa
-	ManagerInitialization_destroy_manager();
+	ManagerInitialization_deinicijalizuj_manager();
 	closesocket(listen_socket);
 	closesocket(accepted_socket);
 	WSACleanup();
@@ -182,8 +182,8 @@ DWORD WINAPI worker_thread_funkcija(LPVOID param) {
 	start_time = clock();
 
 	// AHM malloc i free
-	char* poruka_za_ahm = advanced_malloc(primljenih_bajtova);
-	advanced_free(poruka_za_ahm);
+	char* poruka_za_ahm = ahm_malloc(primljenih_bajtova);
+	ahm_free(poruka_za_ahm);
 
 	// Izracunaj deltu
 	end_time = clock();

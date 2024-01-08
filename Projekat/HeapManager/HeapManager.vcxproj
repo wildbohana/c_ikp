@@ -131,21 +131,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="HeapAddingOperations.h" />
-    <ClInclude Include="HeapCreation.h" />
-    <ClInclude Include="HeapDestruction.h" />
-    <ClInclude Include="HeapManagerInitialization.h" />
-    <ClInclude Include="HeapManipulation.h" />
-    <ClInclude Include="HeapManipulationOperations.h" />
-    <ClInclude Include="Structs.h" />
+    <ClInclude Include="DodajHeap.h" />
+    <ClInclude Include="NapraviHeap.h" />
+    <ClInclude Include="UnistiHeap.h" />
+    <ClInclude Include="InitHeapManager.h" />
+    <ClInclude Include="HeapFunkcije.h" />
+    <ClInclude Include="HeapOperacije.h" />
+    <ClInclude Include="HeapManagerStruct.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HeapAddingOperations.c" />
-    <ClCompile Include="HeapCreation.c" />
-    <ClCompile Include="HeapDestruction.c" />
-    <ClCompile Include="HeapManagerInitialization.c" />
-    <ClCompile Include="HeapManipulation.c" />
-    <ClCompile Include="HeapManipulationOperations.c" />
+    <ClCompile Include="DodajHeap.c" />
+    <ClCompile Include="NapraviHeap.c" />
+    <ClCompile Include="UnistiHeap.c" />
+    <ClCompile Include="InitHeapManager.c" />
+    <ClCompile Include="HeapFunkcije.c" />
+    <ClCompile Include="HeapOperacije.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

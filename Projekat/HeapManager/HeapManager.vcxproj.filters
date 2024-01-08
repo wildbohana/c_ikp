@@ -15,45 +15,45 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Structs.h">
+    <ClInclude Include="HeapManagerStruct.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HeapManipulationOperations.h">
+    <ClInclude Include="HeapOperacije.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HeapManagerInitialization.h">
+    <ClInclude Include="InitHeapManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HeapAddingOperations.h">
+    <ClInclude Include="DodajHeap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HeapCreation.h">
+    <ClInclude Include="NapraviHeap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HeapDestruction.h">
+    <ClInclude Include="UnistiHeap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HeapManipulation.h">
+    <ClInclude Include="HeapFunkcije.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="HeapAddingOperations.c">
+    <ClCompile Include="DodajHeap.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HeapManagerInitialization.c">
+    <ClCompile Include="InitHeapManager.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HeapManipulationOperations.c">
+    <ClCompile Include="HeapOperacije.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HeapCreation.c">
+    <ClCompile Include="NapraviHeap.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HeapDestruction.c">
+    <ClCompile Include="UnistiHeap.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HeapManipulation.c">
+    <ClCompile Include="HeapFunkcije.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

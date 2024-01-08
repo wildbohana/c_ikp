@@ -15,18 +15,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseNetworkOperations.h">
+    <ClInclude Include="Mreza.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Message.h">
+    <ClInclude Include="Poruka.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseNetworkOperations.c">
+    <ClCompile Include="Mreza.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Message.c">
+    <ClCompile Include="Poruka.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

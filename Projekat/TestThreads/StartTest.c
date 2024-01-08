@@ -1,34 +1,32 @@
-#include "ThreadTests.h"
+#include "TestNiti.h"
 
-int main(int argc, char* argv[])
-{
-	if (argc != 2)
-	{
-		printf("Ne postoje argumenti komandne linije\n");
+int main(int argc, char* argv[]) {
+	if (argc != 2) {
+		printf("Morate uneti broj heap-ova kao argument komandne linije!\n");
 		return 0;
 	}
 
 	// Inicijalizacija Manager-a
-	ManagerInitialization_initialize_manager(atoi(argv[1]));
+	ManagerInitialization_inicijalizuj_manager(atoi(argv[1]));
 
 	/* AHM FUNKCIJE TESTOVI */
-	//ThreadTests_custom_malloc_initialize(1);
-	//ThreadTests_custom_malloc_initialize(2);
-	//ThreadTests_custom_malloc_initialize(5);
-	//ThreadTests_custom_malloc_initialize(10);
-	ThreadTests_custom_malloc_initialize(20);
-	//ThreadTests_custom_malloc_initialize(50);
+	//test_ahm_init(1);
+	//test_ahm_init(2);
+	//test_ahm_init(5);
+	//test_ahm_init(10);
+	test_ahm_init(20);
+	//test_ahm_init(50);
 
 	// Brisanje Manager-a
-	ManagerInitialization_destroy_manager();
+	ManagerInitialization_deinicijalizuj_manager();
 
 	/* UGRADJENE FUNKCIJE TESTOVI */
-	//ThreadTests_malloc_initialize(1);
-	//ThreadTests_malloc_initialize(2);
-	//ThreadTests_malloc_initialize(5);
-	//ThreadTests_malloc_initialize(10);
-	//ThreadTests_malloc_initialize(20);
-	//ThreadTests_malloc_initialize(50);
+	//test_obican_init(1);
+	//test_obican_init(2);
+	//test_obican_init(5);
+	//test_obican_init(10);
+	test_obican_init(20);
+	//test_obican_init(50);
 
 	printf("\nPritisnite bilo sta za izlazak iz programa...\n");
 	getchar();

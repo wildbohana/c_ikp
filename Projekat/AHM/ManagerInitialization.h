@@ -1,6 +1,6 @@
 #pragma once
-#include "..\HeapManager\HeapManagerInitialization.h"
-#include "..\HeapManager\HeapAddingOperations.h"
+#include "..\HeapManager\InitHeapManager.h"
+#include "..\HeapManager\DodajHeap.h"
 #include "Structs.h"
 
 /**
@@ -8,29 +8,17 @@
 * Radi se u header-u kako bi se umanjila mogucnost korisnika da rucno upravlja sa ovim objektima
 */
 #ifndef MANAGER_DEFINE
-	HeapManager* _manager;
-	Dictionary* _dictionary;
+	HeapManager* menadzer;
+	Dictionary* recnik;
 #else
 	extern HeapManager* _manager;
 	extern Dictionary* _dictionary;
 #endif
 
-/**
-* Funkcija koja inicijalizuje objekte heap manager-a i recnika
-* Vraca FALSE ako prosledjen broj heapova nije >0
-* Vraca FALSE ako je neuspesna inicijalizacija manager-a ili recnika
-* U slucaju neuspesne inicijalizacije, obe strukture ostaju neinicijalizovane
-*
-* Vraca: BOOL vrednost koja je indikator uspesnosti operacije
-*/
-BOOL ManagerInitialization_initialize_manager(unsigned heap_count);
+// Funkcija koja inicijalizuje objekte HeapManager-a i recnika
+// U slucaju neuspesne inicijalizacije, obe strukture ostaju neinicijalizovane
+BOOL ManagerInitialization_inicijalizuj_manager(unsigned heap_count);
 
-/**
-* Funkcija koja unistava heap manager i deinicijalizuje recnik
-* Sve strukture unutar manager-a i recnika su takodje unistene
-* Vraca FALSE ako manager i recnik nisu prethodno inicijalizovani
-* U slucaju rucnog menjanja manager-a i recnika moze doci do exception-a
-*
-* Vraca: BOOL vrednost koja je indikator uspesnosti operacije.
-*/
-BOOL ManagerInitialization_destroy_manager();
+// Funkcija koja unistava HeapManager i recnik
+// Sve strukture unutar manager-a i recnika su takodje unistene
+BOOL ManagerInitialization_deinicijalizuj_manager();

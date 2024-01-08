@@ -4,12 +4,12 @@
 // Funkcija inicijalizuje Manager, pa tabelu
 // Ako je Manager vec inicijalizovan, vraca false
 // Ako Manager nije inicijalizovan, a recnik jeste, vratice true i nastavice da koristi vec inicijalizovan recnik
-BOOL ManagerInitialization_initialize_manager(unsigned heap_count) {
+BOOL ManagerInitialization_inicijalizuj_manager(unsigned heap_count) {
 	BOOL ret = TRUE;
 
 	// Provera da li je heap_count > 0, vraca FALSE ako nije, ako jeste inicijalizuje HeapManager
 	if (heap_count > 0)
-		_manager = HeapManagerInitialization_initialize_heap_manager(0, heap_count);
+		menadzer = InitHeapManager_inicijalizuj_manager(0, heap_count);
 	else
 		return FALSE;
 
@@ -17,7 +17,7 @@ BOOL ManagerInitialization_initialize_manager(unsigned heap_count) {
 	Heap heap;
 
 	for (unsigned i = 0; i < heap_count; i++) {
-		if (!HeapAddingOperations_add_infinite_heap(_manager, &heap, 50000000)) {
+		if (!DodajHeap_neogranicen(menadzer, &heap, 50000000)) {
 			ret = FALSE;
 			break;
 		}
@@ -26,9 +26,9 @@ BOOL ManagerInitialization_initialize_manager(unsigned heap_count) {
 	// Ako su svi Heap-ovi uspesno dodati nastavlja dalje (stvara recnik)
 	// U suprotnom brise sve, i Manager-a i Heap-ove
 	if (ret == FALSE)
-		HeapManagerInitialization_destroy_manager(&_manager);
+		InitHeapManager_unisti_manager(&menadzer);
 	else {
-		ret = _Dictionary_create(1000);
+		ret = NapraviRecnik(1000);
 	}
 
 	return ret;
@@ -36,16 +36,16 @@ BOOL ManagerInitialization_initialize_manager(unsigned heap_count) {
 
 // Unistava i recnik i Manager
 // Ako je bar jedno uspesno unisteno vraca true
-BOOL ManagerInitialization_destroy_manager() {
+BOOL ManagerInitialization_deinicijalizuj_manager() {
 	BOOL ret = FALSE;
 
-	if (_manager != NULL) {
-		HeapManagerInitialization_destroy_manager(&_manager);
+	if (menadzer != NULL) {
+		InitHeapManager_unisti_manager(&menadzer);
 		ret = TRUE;
 	}
 
-	if (_dictionary != NULL) {
-		_Dictionary_destroy();
+	if (recnik != NULL) {
+		ObrisiRecnik();
 		ret = TRUE;
 	}
 
