@@ -7,8 +7,8 @@ int brojac = 0;
 void test_ahm_init(int broj_niti) {
 	InitializeCriticalSection(&cs);
 
-	// 400000 * 10000 = 4gb (10000 alloc iz testa)
-	int broj_bajta = 400000 / broj_niti;
+	// 200000 * 20000 = 2gb (20000 alloc iz testa)
+	int broj_bajta = 200000 / broj_niti;
 
 	printf("\n\tAHM malloc i free funkcije\n");
 
@@ -42,7 +42,7 @@ void test_ahm_init(int broj_niti) {
 	}
 	free(niti);
 
-	// Nije NULL treba da bude 400000 (4gb)
+	// Nije NULL treba da bude 400000 (20 niti * 20000 objekata)
 	printf("NIJE NULL (uspesna alokacija): %d elemenata!\n", brojac);
 	brojac = 0;
 	DeleteCriticalSection(&cs);
@@ -51,8 +51,8 @@ void test_ahm_init(int broj_niti) {
 
 // Inicijalizacija obicnih testova
 void test_obican_init(int broj_niti) {
-	// 400000 * 10000 = 4gb (10000 alloc iz testa)
-	int broj_bajta = 400000 / broj_niti;
+	// 200000 * 20000 = 4gb (20000 alloc iz testa)
+	int broj_bajta = 200000 / broj_niti;
 
 	HANDLE* niti;
 	niti = (HANDLE)malloc(broj_niti * sizeof(HANDLE));
@@ -89,16 +89,16 @@ void test_obican_init(int broj_niti) {
 
 // TESTOVI AHM FUNKCIJA
 DWORD WINAPI test_ahm_funkcije(LPVOID lpParam) {
-	void* objekti[10000];
+	void* objekti[20000];
 	int broj_bajta = (int)lpParam;
 
-	// ahm malloc (10000 puta po 400kb = 4gb)
-	for (int i = 0; i < 10000; i++) {
+	// ahm malloc (20000 puta po 200kb = 4gb)
+	for (int i = 0; i < 20000; i++) {
 		objekti[i] = ahm_malloc(broj_bajta);
 	}
 
 	// ahm free
-	for (int i = 0; i < 10000; i++) {
+	for (int i = 0; i < 20000; i++) {
 		
 		if (objekti[i] != NULL)
 		{
@@ -114,16 +114,16 @@ DWORD WINAPI test_ahm_funkcije(LPVOID lpParam) {
 
 // TESTOVI UGRADJENIH FUNKCIJA
 DWORD WINAPI test_ugradjene_funkcije(LPVOID lpParam) {
-	void* objekti[10000];
+	void* objekti[20000];
 	int broj_bajta = (int)lpParam;
 
 	// ugradjen malloc
-	for (int i = 0; i < 10000; i++) {
+	for (int i = 0; i < 20000; i++) {
 		objekti[i] = malloc(broj_bajta);
 	}
 
 	// ugradjen free
-	for (int i = 0; i < 10000; i++) {
+	for (int i = 0; i < 20000; i++) {
 		if (objekti[i] != NULL) {
 			free(objekti[i]);
 		}
